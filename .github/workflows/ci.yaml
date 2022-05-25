@@ -1,0 +1,38 @@
+name: Deployment
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: build
+    steps:
+      - run: echo 'hello build'
+        shell: bash
+
+  integration:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: integration
+    name: Integration
+    steps:
+      - run: echo 'Deploy to Integration'
+        shell: bash
+
+  staging:
+    runs-on: ubuntu-latest
+    needs: integration
+    environment: integration
+    name: Staging
+    steps:
+      - run: echo 'Deploy to Staging'
+        shell: bash
+
+  production:
+    runs-on: ubuntu-latest
+    needs: staging
+    environment: production
+    name: Production
+    steps:
+      - run: echo 'Deploy to Production'
+        shell: bash
